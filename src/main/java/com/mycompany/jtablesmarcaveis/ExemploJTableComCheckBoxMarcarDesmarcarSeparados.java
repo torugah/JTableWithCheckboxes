@@ -5,20 +5,21 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class ExemploJTableComCheckBoxTamanhoAjustado extends JFrame {
+public class ExemploJTableComCheckBoxMarcarDesmarcarSeparados extends JFrame {
     private DefaultTableModel model;
     private List<Integer> checkedRows = new ArrayList<>();
     private JLabel statusLabel;
 
-    public ExemploJTableComCheckBoxTamanhoAjustado() {
-        setTitle("Exemplo de JTable com JCheckBox (Tamanho Ajustado)");
+    public ExemploJTableComCheckBoxMarcarDesmarcarSeparados() {
+        setTitle("Exemplo de JTable com JCheckBox (Marcar/Desmarcar Separados)");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 350);
+        setSize(600, 400);
 
         // Cria um modelo de tabela
         model = new DefaultTableModel();
@@ -82,24 +83,55 @@ public class ExemploJTableComCheckBoxTamanhoAjustado extends JFrame {
 
         // Cria um botão "Imprimir" e adiciona um ActionListener
         JButton imprimirButton = new JButton("Imprimir");
-        imprimirButton.addActionListener((ActionEvent e) -> {
-            checkedRows.clear(); // Limpa a lista antes de adicionar os índices das linhas selecionadas
-            for (int i = 0; i < table.getRowCount(); i++) {
-                Boolean checked = (Boolean) table.getValueAt(i, 0);
-                if (checked) {
-                    checkedRows.add(i);
+        imprimirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkedRows.clear(); // Limpa a lista antes de adicionar os índices das linhas selecionadas
+                for (int i = 0; i < table.getRowCount(); i++) {
+                    Boolean checked = (Boolean) table.getValueAt(i, 0);
+                    if (checked) {
+                        checkedRows.add(i);
+                    }
                 }
+                // Atualiza o rótulo com o status
+                statusLabel.setText("Linhas selecionadas: " + checkedRows);
             }
-            // Atualiza o rótulo com o status
-            statusLabel.setText("Linhas selecionadas: " + checkedRows);
         });
 
-        // Adiciona o JScrollPane, o rótulo e o botão ao JFrame
+        // Cria um botão para Marcar Todos
+        JButton marcarTodosButton = new JButton("Marcar Todos");
+        marcarTodosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < table.getRowCount(); i++) {
+                    table.setValueAt(true, i, 0);
+                }
+            }
+        });
+
+        // Cria um botão para Desmarcar Todos
+        JButton desmarcarTodosButton = new JButton("Desmarcar Todos");
+        desmarcarTodosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < table.getRowCount(); i++) {
+                    table.setValueAt(false, i, 0);
+                }
+            }
+        });
+
+        // Adiciona o JScrollPane, o rótulo e os botões ao JFrame
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(statusLabel, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(imprimirButton, BorderLayout.SOUTH);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(imprimirButton);
+        buttonPanel.add(marcarTodosButton);
+        buttonPanel.add(desmarcarTodosButton);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
         getContentPane().add(panel);
 
         setLocationRelativeTo(null);
@@ -107,7 +139,7 @@ public class ExemploJTableComCheckBoxTamanhoAjustado extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ExemploJTableComCheckBoxTamanhoAjustado exemplo = new ExemploJTableComCheckBoxTamanhoAjustado();
+            ExemploJTableComCheckBoxMarcarDesmarcarSeparados exemplo = new ExemploJTableComCheckBoxMarcarDesmarcarSeparados();
             exemplo.setVisible(true);
         });
     }
