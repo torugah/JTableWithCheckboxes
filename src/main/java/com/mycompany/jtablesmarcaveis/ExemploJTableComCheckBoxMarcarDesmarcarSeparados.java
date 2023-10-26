@@ -55,8 +55,7 @@ public class ExemploJTableComCheckBoxMarcarDesmarcarSeparados extends JFrame {
                 if (column == 0) {
                     return new DefaultTableCellRenderer() {
                         @Override
-                        public Component getTableCellRendererComponent(JTable table, Object value,
-                                                                       boolean isSelected, boolean hasFocus, int row, int column) {
+                        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                             JCheckBox checkBox = new JCheckBox();
                             checkBox.setSelected((Boolean) value); // Define o estado do checkbox com base no valor Boolean
                             checkBox.setHorizontalAlignment(JCheckBox.CENTER);
